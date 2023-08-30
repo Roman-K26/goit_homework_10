@@ -1,0 +1,66 @@
+from collections import UserDict
+
+class Field:
+    def __init__(self, value=None):
+        self.value = value
+
+class Name(Field):
+    pass
+
+class Phone(Field):
+    pass
+
+class Email(Field):
+    pass
+
+class Record:
+    def __init__(self, name, phone: Phone=None, email: Email=None):  
+        self.name = name
+        self.phones = [] if phone else []
+        self.emails = [] if email else []
+        if phone:
+            self.phones.append(phone)
+        if email:
+            self.emails.append(email) 
+
+    def add_phone(self, phone):
+        self.phones.append(phone)
+
+    def remove_phone(self, phone):
+        self.phones.remove(phone)
+
+    def edit_phone(self, old_phone, new_phone):
+        if old_phone in self.phones:
+            index = self.phones.index(old_phone)
+            self.phones[index] = new_phone
+
+    def add_email(self, email):
+        self.emails.append(email)
+
+    def remove_email(self, email):
+        self.emails.remove(email)
+
+    def edit_email(self, old_email, new_email):
+        if old_email in self.emails:
+            index = self.emails.index(old_email)
+            self.emails[index] = new_email
+
+class AddressBook(UserDict):
+    def add_record(self, record):
+        self.data[record.name.value] = record
+
+if __name__ == "__main__":
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    email = Email('bill@example.com')  
+    rec = Record(name, phone, email)
+    name2 = Name('Bill')  
+    rec2 = Record(name2)
+    ab = AddressBook()
+    ab.add_record(rec)
+    ab.add_record(rec2)
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].emails, list) 
+    print('All Ok')
